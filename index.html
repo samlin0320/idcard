@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>身分證的秘密 · 你有幾個「0」？ | 3 分鐘測驗中心</title>
+<meta name="description" content="數一數你身分證上有幾個「0」，1 分鐘互動解讀：無零的實滿命、多零的逍遙心、零的位置玄機與五行化解法。整理自南懷瑾釋道學堂，最終解方——利他。">
+<meta property="og:title" content="身分證的秘密 · 你有幾個「0」？">
+<meta property="og:description" content="拿出身分證數一數，你的「0」藏著什麼玄機？附完整化解法與改命萬靈丹。">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --surface: #14141f;
+    --card: #1c1c2b;
+    --accent: #fbbf24;
+    --accent2: #c084fc;
+    --gold: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d2d3f;
+    --green: #34d399;
+    --pink: #f472b6;
+    --blue: #38bdf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh; line-height: 1.75;
+  }
+  a { color: var(--accent2); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center; padding: 64px 20px 40px; position: relative; overflow: hidden;
+    background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(251,191,36,0.14) 0%, transparent 70%);
+  }
+  .badge {
+    display: inline-block; padding: 4px 14px;
+    background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.4);
+    border-radius: 999px; font-size: 12px; color: var(--gold);
+    letter-spacing: 2px; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(1.9rem, 6vw, 3.2rem); font-weight: 800; margin-bottom: 14px;
+    background: linear-gradient(135deg, #e2e8f0 15%, var(--gold) 55%, var(--pink) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p.sub { font-size: 1.05rem; color: var(--muted); max-width: 540px; margin: 0 auto 8px; }
+  .zeros-float { font-size: 1.6rem; letter-spacing: 8px; opacity: .5; user-select: none; }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 26px 24px; margin: 22px 0;
+  }
+  .card h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 1.05rem; font-weight: 700; margin: 16px 0 6px; color: var(--gold); }
+  .card p { margin-bottom: 10px; color: #cbd5e1; font-size: .97rem; }
+  .quote {
+    border-left: 3px solid var(--gold); padding: 10px 16px; margin: 14px 0;
+    background: rgba(251,191,36,0.06); border-radius: 0 12px 12px 0;
+    color: #e2e8f0; font-size: .95rem;
+  }
+  .tag {
+    display: inline-block; font-size: .72rem; padding: 3px 10px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--muted); margin: 2px 4px 2px 0;
+  }
+
+  /* ---------- 互動區 ---------- */
+  .tester { text-align: center; }
+  .digit-input {
+    width: 100%; max-width: 420px; font-size: 1.5rem; letter-spacing: 6px; text-align: center;
+    padding: 14px 16px; border-radius: 14px; border: 2px solid var(--border);
+    background: var(--surface); color: var(--text); outline: none; font-family: 'Consolas', monospace;
+  }
+  .digit-input:focus { border-color: var(--gold); }
+  .privacy { font-size: .78rem; color: var(--muted); margin-top: 8px; }
+  .zero-count { font-size: 3.4rem; font-weight: 800; color: var(--gold); line-height: 1.2; margin: 10px 0 2px; }
+  .quick-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+  .qbtn {
+    padding: 12px 20px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: .95rem; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+  }
+  .qbtn:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .go-btn {
+    margin-top: 18px; padding: 14px 40px; border-radius: 12px; border: none; cursor: pointer;
+    background: linear-gradient(135deg, var(--gold), var(--pink)); color: #0a0a14;
+    font-size: 1.05rem; font-weight: 800; transition: transform .15s;
+  }
+  .go-btn:hover { transform: translateY(-2px); }
+
+  /* ---------- 結果 ---------- */
+  #result { display: none; animation: fadeUp .5s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .result-head { text-align: center; padding: 8px 0 4px; }
+  .result-head .archetype { font-size: 2rem; font-weight: 800; }
+  .result-head .aka { color: var(--muted); font-size: .9rem; }
+  .trait-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  @media (max-width: 560px) { .trait-grid { grid-template-columns: 1fr; } }
+  .trait {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px;
+  }
+  .trait .t-title { font-weight: 800; font-size: .92rem; margin-bottom: 4px; }
+  .trait.good .t-title { color: var(--green); }
+  .trait.warn .t-title { color: var(--pink); }
+  .trait p { font-size: .88rem; color: var(--muted); margin: 0; }
+  .remedy {
+    background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.3);
+    border-radius: 16px; padding: 18px 20px; margin-top: 16px;
+  }
+  .remedy h3 { color: var(--green); margin-top: 0; }
+  .remedy li { margin: 8px 0 8px 20px; font-size: .93rem; color: #cbd5e1; }
+
+  /* ---------- 教學手風琴 ---------- */
+  details {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 0 18px; margin: 10px 0;
+  }
+  details summary {
+    cursor: pointer; padding: 14px 0; font-weight: 700; font-size: .98rem; list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  details summary::after { content: '＋'; color: var(--gold); font-weight: 400; }
+  details[open] summary::after { content: '－'; }
+  details .d-body { padding: 0 0 16px; font-size: .92rem; color: #cbd5e1; }
+  details .d-body p { margin-bottom: 8px; }
+  table.wuxing { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: .88rem; }
+  table.wuxing th, table.wuxing td { border: 1px solid var(--border); padding: 8px 10px; text-align: center; }
+  table.wuxing th { background: var(--surface); color: var(--gold); }
+
+  /* ---------- 利他大結局 ---------- */
+  .lita {
+    text-align: center; border: 1px solid rgba(251,191,36,0.45);
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 0%, rgba(251,191,36,0.12) 0%, transparent 70%),
+      var(--card);
+  }
+  .lita .big { font-size: 2.4rem; font-weight: 800; color: var(--gold); margin: 6px 0; }
+  .lita blockquote {
+    font-size: 1.08rem; color: #f1f5f9; max-width: 560px; margin: 16px auto; line-height: 2;
+  }
+  .share-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+  .sbtn {
+    padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: .95rem;
+    text-decoration: none; cursor: pointer; border: none; transition: transform .15s;
+  }
+  .sbtn:hover { transform: translateY(-2px); }
+  .sbtn.line { background: #06c755; color: #fff; }
+  .sbtn.copy { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+  /* ---------- 來源 / footer ---------- */
+  .source { font-size: .88rem; }
+  .source dt { color: var(--muted); font-size: .8rem; margin-top: 10px; }
+  .source dd { margin: 0; word-break: break-all; }
+  .disclaimer {
+    font-size: .8rem; color: var(--muted); background: var(--surface);
+    border: 1px dashed var(--border); border-radius: 12px; padding: 12px 16px; margin: 18px 0;
+  }
+  footer { text-align: center; padding: 30px 16px 44px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+  .back-center {
+    display: inline-block; margin-top: 10px; padding: 10px 22px; border-radius: 999px;
+    background: rgba(192,132,252,0.12); border: 1px solid rgba(192,132,252,0.4);
+    color: var(--accent2); text-decoration: none; font-weight: 700; font-size: .9rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="badge">3 MINS TEST · 民俗數字學</div>
+  <div class="zeros-float">0️⃣ 0️⃣ 0️⃣</div>
+  <h1>身分證的秘密<br>你有幾個「0」？</h1>
+  <p class="sub">拿出你的身分證，數一數上面有幾個「0」——<br>老祖宗說，這個小圓圈藏著你人生的變數、緩衝區與藏寶庫。</p>
+</header>
+
+<main class="wrap">
+
+  <!-- 開場鉤子 -->
+  <section class="card">
+    <h2>📜 為什麼是「0」？</h2>
+    <p>你這輩子寫過幾次身分證號碼？開戶、掛號、過戶、領包裹……每一次書寫與輸入，都像在向宇宙重複確認同一組「條碼」。</p>
+    <p>在《易經》裡這叫「<b>數</b>」；在數字裡，「0」最特別——數學上它是「無」，但在道家與民間命理裡，它代表<b>無限、空間、緩衝區</b>。1 到 9 是「陰」、是實質的物質；「0」是「陽」、是「氣」、是你轉化厄運的出氣口。</p>
+    <p><b>零太少</b>，像密不透風的牆，壓力無處宣洩；<b>零太多</b>，像風一吹就透的竹籃，福氣容易漏光。多與少，各有功課、也各有解法。👇</p>
+  </section>
+
+  <!-- 互動測驗 -->
+  <section class="card tester" id="test">
+    <h2 style="justify-content:center;">🔢 數一數：你的號碼有幾個 0？</h2>
+    <p style="color:var(--muted); font-size:.9rem;">輸入你身分證的數字部分（或任何你想解讀的號碼）：</p>
+    <input class="digit-input" id="digits" inputmode="numeric" maxlength="10" placeholder="例：203056789" autocomplete="off">
+    <div class="privacy">🔒 所有計算只在你的手機／電腦上完成，任何資料都不會被上傳或儲存。</div>
+    <div class="zero-count" id="count" style="display:none;">0</div>
+    <button class="go-btn" id="goBtn">✨ 解讀我的數字</button>
+    <p style="margin-top:20px; color:var(--muted); font-size:.85rem;">不想輸入號碼？直接選：</p>
+    <div class="quick-btns">
+      <button class="qbtn" data-cat="none">一個 0 都沒有</button>
+      <button class="qbtn" data-cat="mid">有 1～2 個 0</button>
+      <button class="qbtn" data-cat="many">有 3 個以上</button>
+    </div>
+  </section>
+
+  <!-- 結果區 -->
+  <section class="card" id="result">
+    <div class="result-head">
+      <div style="font-size:2.6rem;" id="r-emoji"></div>
+      <div class="archetype" id="r-name"></div>
+      <div class="aka" id="r-aka"></div>
+    </div>
+    <p id="r-desc" style="margin-top:14px;"></p>
+    <div class="trait-grid" id="r-traits"></div>
+    <div class="remedy">
+      <h3 id="r-remedy-title"></h3>
+      <ul id="r-remedy-list"></ul>
+    </div>
+    <p style="text-align:center; margin-top:18px;"><a href="#lita" style="font-weight:700;">👉 不論幾個 0，都通用的「改命萬靈丹」在最下面</a></p>
+  </section>
+
+  <!-- 進階教學 -->
+  <section class="card">
+    <h2>🎓 進階課：零的「位置」比數量更玄</h2>
+    <p>廟口命理師只看尾數，那是外行看熱鬧。真正的玄機，要看「0」落在哪裡：</p>
+
+    <details>
+      <summary>🎂 先天格局 — 0 在出生年月日</summary>
+      <div class="d-body">
+        <p><b>年份帶 0</b>（如民國 40、50 年代／西元 1960、1970）：命理上稱「空亡」在長輩宮，代表與長輩的<b>疏離或代際傳承</b>——可能很早離家打拼，或父母極其嚴格。那個 0 吸走了部分童年的撒嬌權，卻也磨出少年老成的早熟。</p>
+        <p><b>月／日帶 0</b>（10 月、10／20／30 日）：稱「中年空亡」，落在婚姻宮與合作財運。黃金二十年裡往往會經歷一次重大「歸零」——事業或感情因不可預期的變數回到原點。</p>
+        <p><b>但這不是壞事</b>：「禍福相倚，舊的不去新的不來。」前半生的盤子太小，盛不下晚年的大福報，老天把小碗砸碎，是要你騰出雙手接大金盆。撐過 35～40 歲，就叫<b>大器晚成</b>。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🔚 後天格局 — 0 在後四碼（晚年運）</summary>
+      <div class="d-body">
+        <p><b>尾數是 0</b>：民間公認「倒吃甘蔗」格局，適應力強、貴人遍地，財富慢慢累積，晚年圓滿。但關鍵在 0 前面那個數字：</p>
+        <p>「<b>10 / 80</b>」→「金空則鳴」：晚年有威望、有話語權，走到哪都是大哥大姐。</p>
+        <p>「<b>20 / 70</b>」→「火燒空亡」：物質無缺但精神易空虛，晚年易孤單、變成碎碎念。<b>解法</b>：提早修心養性——找個信仰、學中醫易經、上社區大學，把精神寄託填滿。</p>
+        <p><b>夾心餅乾</b>（505、808、303）→「藏寶」格：0 被兩個實數保護，是不顯山不露水的「掃地僧」，擁有別人看不到的隱形財富或絕技，低調就是他的底氣。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>☯️ 數字五行 — 0 是旁邊數字的「放大鏡」</summary>
+      <div class="d-body">
+        <table class="wuxing">
+          <tr><th>五行</th><th>水</th><th>火</th><th>木</th><th>金</th><th>土</th></tr>
+          <tr><td>數字</td><td>1、6</td><td>2、7</td><td>3、8</td><td>4、9</td><td>5、0</td></tr>
+        </table>
+        <p><b>0 旁邊是 2 或 7（火）</b>→「火勢蔓延」：易沒耐心、心火旺、焦慮發炎。<b>解法「水克火」</b>：家裡多放水培植物、多穿黑色深藍色衣服。</p>
+        <p><b>0 旁邊是 1 或 6（水）</b>→「水淹金山」：脾氣悶、腎氣易不足、濕氣重手腳冰冷。<b>解法「補火」</b>：多曬早上 9–11 點的太陽（曬背部督脈）、做微微出汗的運動逼出寒濕。</p>
+        <p>不用吃藥，透過生活習慣，就能把上天發的牌打得更好。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>0️⃣0️⃣ 雙零 — 能量指數級放大</summary>
+      <div class="d-body">
+        <p>連續兩個 0 稱「雙靈」，能量不是 1+1=2，而是指數級增長。吉數帶雙零（如 8008 屬木、生根發芽）好運擋不住；凶數帶雙零（如 400，四屬金、主刀劍）則要格外謹慎出行與危險活動。</p>
+        <p><b>化解訣竅「應劫」</b>：主動從事高壓、高責任的行業（醫護、消防、警察、操盤手），用職業風險化解命運風險，也是行善積德回饋社會。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🌙 子時心法 — 每天免費送你一個「0」</summary>
+      <div class="d-body">
+        <p>每晚 <b>23:00–01:00（子時）</b>是一天的「零」——陰陽交會、系統重啟的時刻。不管你身分證上有幾個 0、白天受了多少委屈，只要在這兩小時安穩睡著，五臟六腑就會自動清理垃圾、修復系統。</p>
+        <p>反過來說，長期熬夜滑手機、追劇、應酬，就是在過度消耗先天元氣。<b>誰能在子時睡好覺，誰才是真正把福氣握在手中的人。</b></p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 三個層面 -->
+  <section class="card">
+    <h2>🎭 三個層面的「0」</h2>
+    <p>學《易經》、學中醫、學佛學，最高境界從來不是<b>算命</b>，而是<b>改命</b>：</p>
+    <div class="trait-grid">
+      <div class="trait"><div class="t-title" style="color:var(--muted);">🆔 身分證上的 0</div><p>固定的。出生那一刻的設定，無法改變——去戶政事務所換號碼也躲不掉人生的功課。</p></div>
+      <div class="trait"><div class="t-title" style="color:var(--blue);">💖 心中的 0</div><p>可變的。零太少的人修「空靈」學留白；零太多的人修「外圓」立規矩、聚焦一點。</p></div>
+      <div class="trait good" style="grid-column:1/-1;"><div class="t-title">💪 行為上的 0</div><p>最終的結果。參透這三層，爛牌也能打成王牌——數字只是入場券號碼，這齣戲好不好看，取決於你怎麼演主角。</p></div>
+    </div>
+  </section>
+
+  <!-- 利他 -->
+  <section class="card lita" id="lita">
+    <h2 style="justify-content:center;">🌟 改命萬靈丹 — 不論幾個 0 都通用</h2>
+    <div class="big">利他</div>
+    <blockquote>「什麼是利他？就是心懷善念，處處為他人著想。即使你的人生充滿了缺陷，或生活中遭遇各種挫折，只要你開始幫助別人🤝，奇蹟就會發生✨」</blockquote>
+    <p style="color:#cbd5e1; max-width:560px; margin:0 auto 6px;">因為「0」也代表圓滿、代表大愛。當你幫助別人，就走出了自我的小圈子；你發出的每一個善念都會變成能量，反彈回來填補號碼上的漏洞。古人說「<b>德潤身</b>」——德，就是最好的風水、最好的護身符。你做的善事越多，你的路就寬一丈。</p>
+    <div class="share-btns">
+      <a class="sbtn line" id="shareLine" href="#" target="_blank" rel="noopener">📲 LINE 分享給需要的人</a>
+      <button class="sbtn copy" id="copyLink">🔗 複製本頁連結</button>
+    </div>
+    <p style="font-size:.82rem; color:var(--muted); margin-top:12px;">本頁基於「利他」原則免費共享。一次分享，可能就是對低谷中親友的一次幫助——這就是「法布施」。🙏</p>
+  </section>
+
+  <!-- 引用來源 -->
+  <section class="card source">
+    <h2>📚 內容出處與引用</h2>
+    <p>本頁內容整理、改編自以下影片之文字稿，著作權歸原頻道所有：</p>
+    <dl>
+      <dt>影片主題</dt><dd>身份證的秘密 — 數字「0」與命運</dd>
+      <dt>主講者</dt><dd>南老師</dd>
+      <dt>頻道</dt><dd>南懷瑾釋道學堂官方</dd>
+      <dt>原始網址</dt><dd><a href="https://www.youtube.com/watch?v=rX7g-vK5oWU" target="_blank" rel="noopener">https://www.youtube.com/watch?v=rX7g-vK5oWU</a></dd>
+      <dt>短網址</dt><dd><a href="https://tinyurl.com/23hcphna" target="_blank" rel="noopener">https://tinyurl.com/23hcphna</a></dd>
+    </dl>
+    <h3>引用原文（核心段落）</h3>
+    <div class="quote">「那麼，有沒有一種至高無上的改命之法，無論『零』多『零』少都能通用呢？有！這就是一個萬靈丹🌟。這個萬靈丹的名字就叫『利他』💖。什麼是利他？就是心懷善念，處處為他人著想。即使你的人生充滿了缺陷，或生活中遭遇各種挫折，只要你開始幫助別人🤝，奇蹟就會發生✨。」<br>——南老師，南懷瑾釋道學堂官方</div>
+    <div class="disclaimer">⚠️ 本頁內容屬民俗文化與人生哲理分享，僅供娛樂與自我省思，不構成醫療、財務或法律建議。身體不適請就醫，理財請諮詢專業人士。你的身分證號碼很重要——請勿在任何不明網站輸入完整證號。</div>
+  </section>
+
+</main>
+
+<footer>
+  3 分鐘測驗中心　·　© <span id="y"></span><br>
+  📡 更多內容請訂閱：<a href="https://t.me/sam00may" target="_blank" rel="noopener">t.me/sam00may</a><br>
+  <a class="back-center" href="https://questions.3minstest.com">← 回測驗中心，看更多測驗</a>
+</footer>
+
+<script>
+document.getElementById('y').textContent = new Date().getFullYear();
+
+const DATA = {
+  none: {
+    emoji: '🧱',
+    name: '實滿命 · 台灣牛',
+    aka: '民間俗稱「強忘命」— 一個 0 都沒有',
+    desc: '你聰明、開朗、正直、樂於付出，人生字典裡只有一個字「做」。腳踏實地、閒不下來，一停下來就渾身不對勁——台灣幾十年的經濟奇蹟，就是靠你這種人撐起來的。',
+    traits: [
+      { good: true,  t: '💪 天生優勢', d: '執行力滿格、抗壓耐操、老闆最愛。可以一肩扛起一片天，靠實幹累積財富。' },
+      { good: false, t: '⚠️ 滿招損', d: '像密不透風的牆——沒有「孔」、沒有壓力釋放通道。委屈全往肚裡吞，中醫叫「痛則不通」，久了易成「陰實」：結節、增生找上門。' },
+      { good: false, t: '🧱 硬碰硬', d: '沒有圓圈就不會滾動。固執、直來直往、不懂繞道，人際上容易正面衝突。老子說「曲則全」——太直，容易折斷。' },
+      { good: true,  t: '📖 前車之鑑', d: '故事裡的建材老闆號碼全無 0，「實滿為患」不肯停下，半年後心肌梗塞——用生命賺錢，卻沒命花。別學他。' }
+    ],
+    remedyTitle: '💊 你的人生藥方：「人為造零」',
+    remedy: [
+      '每年強迫自己放空：去旅行、什麼都不做，關掉手機、去山裡海邊、盯著樹葉發呆——打開壓力鍋的閥門。',
+      '學會留白：話不說滿、路不走絕，給別人留餘地，牆壁就會變成門。',
+      '學水的智慧：遇阻礙練習「繞道」而非硬碰，曲則全。',
+      '守住子時（23:00–01:00）睡覺——這是每天免費的歸零重啟。',
+      '記住：不歸零，辛苦累積的財富最終都會拿去付醫藥費。'
+    ]
+  },
+  mid: {
+    emoji: '⚖️',
+    name: '陰陽調和 · 社會中堅',
+    aka: '有 1～2 個 0 — 最穩定的中庸之福',
+    desc: '恭喜你！你既有紮實的物質基礎，也留了喘息空間。不會像實心磚頭飽受淤堵之苦，也不會像無根浮萍漏光福氣——你是社會的中流砥柱。',
+    traits: [
+      { good: true,  t: '☯️ 平衡之象', d: '有實有虛、能拼能放，是「陰陽調和」的好格局。' },
+      { good: false, t: '🧩 但別高枕無憂', d: '最複雜的玄機藏在「位置」：0 落在出生年月日是「先天功課」，落在後四碼是「晚年結果」——詳見下方進階課。' },
+      { good: false, t: '🔥 尾數 20／70 注意', d: '「火燒空亡」：物質不缺但精神易空虛，要提早經營精神寄託。' },
+      { good: true,  t: '💎 夾心餅乾是極品', d: '若有 505、808、303 這種「兩實夾一零」，是深藏不露的「藏寶」格——低調就是你的底氣。' }
+    ],
+    remedyTitle: '💊 你的人生藥方：顧好「位置」的功課',
+    remedy: [
+      '0 在月／日：中年若遇「歸零」別怨天——那是老天砸小碗、換大金盆，咬牙撐過 35～40 歲就是大器晚成。',
+      '尾數 20／70：提早修心養性——找信仰、學點易經中醫、上社區大學，把精神世界填滿。',
+      '查一下 0 旁邊的數字五行（見進階課），用穿衣、曬太陽等生活習慣微調磁場。',
+      '守住子時睡眠，維持你最大的本錢——穩定。'
+    ]
+  },
+  many: {
+    emoji: '🪁',
+    name: '逍遙心 · 天公仔',
+    aka: '有 3 個以上的 0 — 純陽之氣、天生是寶',
+    desc: '包容力強、懂變通、不計較，人緣好到走到哪都能交朋友。頭腦轉得快、直覺敏銳——別人還在算一二三四五，你心裡已經有答案了。',
+    traits: [
+      { good: true,  t: '🌟 天賦優勢', d: '靠好點子、好人脈賺錢，常常一個機會就賺到別人十年的量。' },
+      { good: false, t: '💸 存不住', d: '零多像竹籃，左手進右手出：朋友開口不好意思拒絕、腦一熱就投資、總覺得錢還會再回來——年輕叫瀟灑，年老叫空虛。' },
+      { good: false, t: '🤯 神不守舍', d: '陽氣過盛收不回來：失眠多夢、腦袋像賽馬場停不下來，長期耗損元氣、白天萎靡。' },
+      { good: false, t: '🪁 斷線風箏', d: '飛得高很好看，但沒有線牽著，一陣風就可能消失無蹤。' }
+    ],
+    remedyTitle: '💊 你的人生藥方：三招補財補氣',
+    remedy: [
+      '「虛轉實」：賺到錢就買磚頭——房子、土地、最穩固的固定資產，給竹籃外面套一個鐵桶。',
+      '「天地配」：找一個踏實的伴侶幫你牽線。若對方身分證一個 0 都沒有，恭喜，天作之合——他不浪漫，但他讓你晚年不碎一地。',
+      '「專注一事」：選一門手藝或行業做到極致、做到天下第一，把散掉的精力匯聚到一個點上。心安了，福氣自然聚集。',
+      '睡好子時，把奔騰的心神收回來——陽氣入陰，才能安神。'
+    ]
+  }
+};
+
+const $ = id => document.getElementById(id);
+const input = $('digits');
+
+input.addEventListener('input', () => {
+  input.value = input.value.replace(/\D/g, '');
+  const zeros = (input.value.match(/0/g) || []).length;
+  const c = $('count');
+  if (input.value.length) {
+    c.style.display = 'block';
+    c.textContent = zeros + ' 個 0';
+  } else { c.style.display = 'none'; }
+});
+
+function show(cat) {
+  const d = DATA[cat];
+  $('r-emoji').textContent = d.emoji;
+  $('r-name').textContent = d.name;
+  $('r-aka').textContent = d.aka;
+  $('r-desc').textContent = d.desc;
+  $('r-traits').innerHTML = d.traits.map(t =>
+    `<div class="trait ${t.good ? 'good' : 'warn'}"><div class="t-title">${t.t}</div><p>${t.d}</p></div>`
+  ).join('');
+  $('r-remedy-title').textContent = d.remedyTitle;
+  $('r-remedy-list').innerHTML = d.remedy.map(r => `<li>${r}</li>`).join('');
+  const res = $('result');
+  res.style.display = 'block';
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+$('goBtn').addEventListener('click', () => {
+  const zeros = (input.value.match(/0/g) || []).length;
+  if (!input.value.length) { input.focus(); input.style.borderColor = 'var(--pink)'; return; }
+  show(zeros === 0 ? 'none' : zeros <= 2 ? 'mid' : 'many');
+});
+
+document.querySelectorAll('.qbtn').forEach(b =>
+  b.addEventListener('click', () => show(b.dataset.cat))
+);
+
+const pageUrl = 'https://idcard.3minstest.com';
+$('shareLine').href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(pageUrl) + '&text=' + encodeURIComponent('💳 身分證的秘密：你有幾個「0」？1 分鐘互動解讀 👉');
+$('copyLink').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(pageUrl);
+    $('copyLink').textContent = '✅ 已複製，感謝分享！';
+  } catch {
+    prompt('請手動複製：', pageUrl);
+  }
+});
+</script>
+</body>
+</html>
