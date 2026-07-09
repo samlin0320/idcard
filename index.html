@@ -79,6 +79,8 @@
   .digit-input:focus { border-color: var(--gold); }
   .privacy { font-size: .78rem; color: var(--muted); margin-top: 8px; }
   .zero-count { font-size: 3.4rem; font-weight: 800; color: var(--gold); line-height: 1.2; margin: 10px 0 2px; }
+  .birth-row { display: flex; gap: 10px; justify-content: center; }
+  .birth-input { max-width: 120px; font-size: 1.15rem; letter-spacing: 2px; padding: 12px 8px; }
   .quick-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
   .qbtn {
     padding: 12px 20px; border-radius: 12px; border: 1px solid var(--border);
@@ -114,6 +116,18 @@
   }
   .remedy h3 { color: var(--green); margin-top: 0; }
   .remedy li { margin: 8px 0 8px 20px; font-size: .93rem; color: #cbd5e1; }
+  .summary-card {
+    margin-top: 26px; border: 1px solid rgba(251,191,36,0.5); border-radius: 16px;
+    padding: 20px 22px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(251,191,36,0.10) 0%, transparent 70%), var(--surface);
+  }
+  .summary-card h2 { color: var(--gold); }
+  .summary-card li { margin: 9px 0 9px 20px; font-size: .93rem; color: #e2e8f0; }
+  .summary-card li b { color: var(--gold); }
+  .summary-final {
+    margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: .92rem;
+    background: rgba(251,191,36,0.08); border: 1px dashed rgba(251,191,36,0.4);
+  }
 
   /* ---------- 教學手風琴 ---------- */
   details {
@@ -194,6 +208,12 @@
     <input class="digit-input" id="digits" inputmode="numeric" maxlength="10" placeholder="例：203056789" autocomplete="off">
     <div class="privacy">🔒 所有計算只在你的手機／電腦上完成，任何資料都不會被上傳或儲存。</div>
     <div class="zero-count" id="count" style="display:none;">0</div>
+    <p style="color:var(--muted); font-size:.9rem; margin-top:22px;">🎂 進階（選填）：輸入出生年月日，一併解讀「先天格局」：</p>
+    <div class="birth-row">
+      <input class="digit-input birth-input" id="by" inputmode="numeric" maxlength="4" placeholder="西元年" autocomplete="off">
+      <input class="digit-input birth-input" id="bm" inputmode="numeric" maxlength="2" placeholder="月" autocomplete="off">
+      <input class="digit-input birth-input" id="bd" inputmode="numeric" maxlength="2" placeholder="日" autocomplete="off">
+    </div>
     <button class="go-btn" id="goBtn">✨ 解讀我的數字</button>
     <p style="margin-top:20px; color:var(--muted); font-size:.85rem;">不想輸入號碼？直接選：</p>
     <div class="quick-btns">
@@ -216,6 +236,23 @@
       <h3 id="r-remedy-title"></h3>
       <ul id="r-remedy-list"></ul>
     </div>
+
+    <div id="r-birth" style="display:none;">
+      <h2 style="margin-top:26px;">🎂 你的先天格局（出生年月日）</h2>
+      <div class="trait-grid" id="r-birth-items"></div>
+    </div>
+
+    <div id="r-detail" style="display:none;">
+      <h2 style="margin-top:26px;">🔍 你的號碼玄機（位置解讀）</h2>
+      <div class="trait-grid" id="r-detail-items"></div>
+    </div>
+
+    <div class="summary-card" id="r-summary" style="display:none;">
+      <h2>📋 全部資料總結</h2>
+      <ul id="r-summary-list"></ul>
+      <p class="summary-final">🌟 最後記住：號碼是固定的，心是活的。以上所有功課的萬靈丹只有一帖——<b>利他</b>。心懷善念、處處為他人著想，你做的善事越多，路就寬一丈。</p>
+    </div>
+
     <p style="text-align:center; margin-top:18px;"><a href="#lita" style="font-weight:700;">👉 不論幾個 0，都通用的「改命萬靈丹」在最下面</a></p>
   </section>
 
@@ -398,30 +435,129 @@ input.addEventListener('input', () => {
   } else { c.style.display = 'none'; }
 });
 
-function show(cat) {
-  const d = DATA[cat];
-  $('r-emoji').textContent = d.emoji;
-  $('r-name').textContent = d.name;
-  $('r-aka').textContent = d.aka;
-  $('r-desc').textContent = d.desc;
-  $('r-traits').innerHTML = d.traits.map(t =>
+// ---------- 先天格局：出生年月日 ----------
+function analyzeBirth(y, m, d) {
+  const items = [];
+  if (!y && !m && !d) return null;
+  if (y && /0/.test(String(y))) {
+    items.push({ good: false, t: '🗓️ 年份帶 0 · 空亡在長輩宮',
+      d: `你的出生年 ${y} 帶「0」。命理上這代表與長輩的疏離或代際傳承：可能很早離家打拼，或父母極其嚴格——嚴厲背後是家族未完成的心願。那個 0 吸走了部分童年的撒嬌權，卻也磨出你少年老成、比同齡人早熟的個性。` });
+  } else if (y) {
+    items.push({ good: true, t: '🗓️ 年份無 0 · 長輩宮紮實',
+      d: `出生年 ${y} 不帶「0」，先天長輩緣分平穩，童年根基相對安穩，是很好的起跑點。` });
+  }
+  const midZero = (m == 10) || [10, 20, 30].includes(Number(d));
+  if (midZero) {
+    items.push({ good: false, t: '💍 月／日帶 0 · 中年空亡',
+      d: `${m == 10 ? '10 月出生' : ''}${m == 10 && [10,20,30].includes(Number(d)) ? '、' : ''}${[10,20,30].includes(Number(d)) ? d + ' 號出生' : ''}，0 落在婚姻宮與合作財運。人生黃金二十年可能經歷一次重大「歸零」——事業或感情因不可預期的變數回到原點。` });
+    items.push({ good: true, t: '📈 但這是升級，不是懲罰',
+      d: '禍福相倚：前半生的盤子太小，盛不下晚年的大福報。老天砸碎小碗，是要你騰出雙手接大金盆。咬牙撐過 35～40 歲，財運穩如泰山——這就叫「大器晚成」。' });
+  } else if (m && d) {
+    items.push({ good: true, t: '💍 月／日無 0 · 中年平穩',
+      d: `${m} 月 ${d} 日不落「中年空亡」，婚姻宮與合作財運沒有先天歸零的功課，黃金歲月靠穩紮穩打累積即可。` });
+  }
+  return items.length ? items : null;
+}
+
+// ---------- 號碼玄機：位置細節 ----------
+function analyzeDigits(s) {
+  const items = [];
+  if (!s || !s.includes('0')) return null;
+  const last = s[s.length - 1], prev = s[s.length - 2];
+  if (last === '0' && prev) {
+    if ('18'.includes(prev)) {
+      items.push({ good: true, t: `👑 尾碼「${prev}0」· 金空則鳴`, d: '1 和 8 是強硬的大柱子，後面跟著代表空間的 0——晚年有威望、有話語權，在家是老大、在社區是顧問，走到哪都被叫大哥大姐。' });
+    } else if ('27'.includes(prev)) {
+      items.push({ good: false, t: `🔥 尾碼「${prev}0」· 火燒空亡`, d: '2、7 屬火，火後面跟著空空的 0：物質可能豐裕，但精神上易空虛、晚年易孤單碎碎念。解法：提早修心養性——找個信仰、學點中醫易經、上社區大學，把精神寄託填滿。' });
+    } else {
+      items.push({ good: true, t: '🍬 尾數是 0 · 倒吃甘蔗', d: '民間公認最享福的格局：早年可能出身普通，但適應力強、貴人遍地，財富慢慢累積，晚年圓滿、越吃越甜。' });
+    }
+  }
+  const sw = s.match(/(\d)0\1/);
+  if (sw && sw[1] !== '0') {
+    items.push({ good: true, t: `💎 「${sw[0]}」夾心餅乾 · 藏寶格`, d: '0 被兩個相同實數夾住保護——是不顯山不露水的「掃地僧」格局：擁有別人看不到的隱形財富或絕技，關鍵時刻能拿出大量資源。低調，就是你的底氣。' });
+  }
+  if (/00/.test(s)) {
+    const dz = s.match(/\d(?=00)|(?<=00)\d/);
+    items.push({ good: false, t: '0️⃣0️⃣ 連續雙零 · 雙靈', d: `雙零能量呈指數級放大${dz ? '（注意旁邊的數字 ' + dz[0] + ' 決定吉凶方向）' : ''}：吉數帶雙零好運擋不住；凶數帶雙零則要謹慎出行與危險活動。化解訣竅「應劫」：從事高壓高責任的行業（醫護、消防、警察、操盤手），用職業風險化解命運風險，也是行善積德。` });
+  }
+  let fire = false, water = false;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] !== '0') continue;
+    const nb = (s[i-1] || '') + (s[i+1] || '');
+    if (/[27]/.test(nb)) fire = true;
+    if (/[16]/.test(nb)) water = true;
+  }
+  if (fire) items.push({ good: false, t: '🔥 0 旁有 2／7 · 火勢蔓延', d: '0 是放大鏡，把旁邊火數的能量成倍放大：易沒耐心、心火旺、焦慮發炎。解法「水克火」：客廳書桌多放水培植物，多穿黑色與深藍色衣服，用水的磁場壓火。' });
+  if (water) items.push({ good: false, t: '💧 0 旁有 1／6 · 水淹金山', d: '水被 0 放大：脾氣較悶、腎氣易不足、濕氣重、冬天手腳冰冷。解法「補火」：多曬早上 9–11 點的太陽（曬背部督脈），做微微出汗的運動把寒濕逼出來。' });
+  return items.length ? items : null;
+}
+
+function renderGrid(items, boxId, gridId) {
+  const box = $(boxId);
+  if (!items) { box.style.display = 'none'; return; }
+  $(gridId).innerHTML = items.map(t =>
     `<div class="trait ${t.good ? 'good' : 'warn'}"><div class="t-title">${t.t}</div><p>${t.d}</p></div>`
   ).join('');
-  $('r-remedy-title').textContent = d.remedyTitle;
-  $('r-remedy-list').innerHTML = d.remedy.map(r => `<li>${r}</li>`).join('');
+  box.style.display = 'block';
+}
+
+function show(cat, opts) {
+  opts = opts || {};
+  const d = cat ? DATA[cat] : null;
+  const archetypeEls = [document.querySelector('.result-head'), $('r-desc'), $('r-traits'), document.querySelector('.remedy')];
+  if (d) {
+    archetypeEls.forEach(el => el.style.display = '');
+    $('r-emoji').textContent = d.emoji;
+    $('r-name').textContent = d.name;
+    $('r-aka').textContent = d.aka;
+    $('r-desc').textContent = d.desc;
+    $('r-traits').innerHTML = d.traits.map(t =>
+      `<div class="trait ${t.good ? 'good' : 'warn'}"><div class="t-title">${t.t}</div><p>${t.d}</p></div>`
+    ).join('');
+    $('r-remedy-title').textContent = d.remedyTitle;
+    $('r-remedy-list').innerHTML = d.remedy.map(r => `<li>${r}</li>`).join('');
+  } else {
+    archetypeEls.forEach(el => el.style.display = 'none');
+  }
+
+  renderGrid(opts.birth, 'r-birth', 'r-birth-items');
+  renderGrid(opts.detail, 'r-detail', 'r-detail-items');
+
+  // 總結
+  const sum = [];
+  if (opts.zeros != null && d) sum.push(`你的號碼共有 <b>${opts.zeros} 個「0」</b> → 命格：<b>${d.name}</b>。${cat === 'none' ? '重點功課是「人為造零」：學放空、學留白、學轉彎。' : cat === 'mid' ? '陰陽調和的中庸之福，重點在顧好 0 的「位置」功課。' : '天賦滿滿但要防漏：虛轉實、天地配、專注一事。'}`);
+  if (opts.birth) opts.birth.forEach(i => sum.push(`<b>先天</b>｜${i.t}：${i.d.split('。')[0]}。`));
+  if (opts.detail) opts.detail.forEach(i => sum.push(`<b>號碼</b>｜${i.t}：${i.d.split('。')[0]}。`));
+  if (opts.zeros == null && opts.birth) sum.push('想看完整命格與號碼玄機？回上方輸入你的號碼數字，一次總結全部資料。');
+  sum.push('<b>共同心法</b>｜每晚 23:00–01:00（子時）睡好覺——這是每天免費的歸零重啟，比任何開運物都有效。');
+  const showSum = opts.zeros != null || opts.birth || opts.detail;
+  $('r-summary-list').innerHTML = sum.map(x => `<li>${x}</li>`).join('');
+  $('r-summary').style.display = showSum ? 'block' : 'none';
+
   const res = $('result');
   res.style.display = 'block';
   res.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 $('goBtn').addEventListener('click', () => {
-  const zeros = (input.value.match(/0/g) || []).length;
-  if (!input.value.length) { input.focus(); input.style.borderColor = 'var(--pink)'; return; }
-  show(zeros === 0 ? 'none' : zeros <= 2 ? 'mid' : 'many');
+  const hasDigits = input.value.length > 0;
+  const y = $('by').value.trim(), m = $('bm').value.trim(), dd = $('bd').value.trim();
+  const hasBirth = y || m || dd;
+  if (!hasDigits && !hasBirth) { input.focus(); input.style.borderColor = 'var(--pink)'; return; }
+  const zeros = hasDigits ? (input.value.match(/0/g) || []).length : null;
+  const birth = analyzeBirth(y, m, dd);
+  const detail = hasDigits ? analyzeDigits(input.value) : null;
+  const cat = hasDigits ? (zeros === 0 ? 'none' : zeros <= 2 ? 'mid' : 'many') : null;
+  show(cat, { zeros, birth, detail });
 });
 
+['by', 'bm', 'bd'].forEach(id =>
+  $(id).addEventListener('input', () => { $(id).value = $(id).value.replace(/\D/g, ''); })
+);
+
 document.querySelectorAll('.qbtn').forEach(b =>
-  b.addEventListener('click', () => show(b.dataset.cat))
+  b.addEventListener('click', () => show(b.dataset.cat, {}))
 );
 
 const pageUrl = 'https://idcard.3minstest.com';
