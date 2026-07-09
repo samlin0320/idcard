@@ -245,6 +245,7 @@
     <div id="r-detail" style="display:none;">
       <h2 style="margin-top:26px;">🔍 你的號碼玄機（位置解讀）</h2>
       <div class="trait-grid" id="r-detail-items"></div>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:10px;">※ 標有「延伸解讀」的項目（金／木／土），是本站依影片的五行架構所做的延伸整理；影片原文的化解法只講火（2／7）與水（1／6）兩種。</p>
     </div>
 
     <div class="summary-card" id="r-summary" style="display:none;">
@@ -481,15 +482,30 @@ function analyzeDigits(s) {
     const dz = s.match(/\d(?=00)|(?<=00)\d/);
     items.push({ good: false, t: '0️⃣0️⃣ 連續雙零 · 雙靈', d: `雙零能量呈指數級放大${dz ? '（注意旁邊的數字 ' + dz[0] + ' 決定吉凶方向）' : ''}：吉數帶雙零好運擋不住；凶數帶雙零則要謹慎出行與危險活動。化解訣竅「應劫」：從事高壓高責任的行業（醫護、消防、警察、操盤手），用職業風險化解命運風險，也是行善積德。` });
   }
-  let fire = false, water = false;
+  // 逐 0 拆解：每個 0 的位置與旁邊數字的五行
+  const ELEM = { '1':'水','6':'水','2':'火','7':'火','3':'木','8':'木','4':'金','9':'金','5':'土','0':'土' };
+  const perZero = [];
+  let fire = false, water = false, metal = false, wood = false, earth = false;
   for (let i = 0; i < s.length; i++) {
     if (s[i] !== '0') continue;
+    const nbs = [];
+    [s[i-1], s[i+1]].forEach(n => { if (n) nbs.push(`${n}（${ELEM[n]}）`); });
+    perZero.push(`第 ${i + 1} 碼的 0 → 旁邊是 ${nbs.join('、') || '（獨立）'}`);
     const nb = (s[i-1] || '') + (s[i+1] || '');
     if (/[27]/.test(nb)) fire = true;
     if (/[16]/.test(nb)) water = true;
+    if (/[49]/.test(nb)) metal = true;
+    if (/[38]/.test(nb)) wood = true;
+    if (/5/.test(nb)) earth = true;
   }
-  if (fire) items.push({ good: false, t: '🔥 0 旁有 2／7 · 火勢蔓延', d: '0 是放大鏡，把旁邊火數的能量成倍放大：易沒耐心、心火旺、焦慮發炎。解法「水克火」：客廳書桌多放水培植物，多穿黑色與深藍色衣服，用水的磁場壓火。' });
-  if (water) items.push({ good: false, t: '💧 0 旁有 1／6 · 水淹金山', d: '水被 0 放大：脾氣較悶、腎氣易不足、濕氣重、冬天手腳冰冷。解法「補火」：多曬早上 9–11 點的太陽（曬背部督脈），做微微出汗的運動把寒濕逼出來。' });
+  if (perZero.length) {
+    items.push({ good: true, t: `🧿 逐 0 拆解（共 ${perZero.length} 個）`, d: perZero.join('；') + '。0 是放大鏡，會把旁邊數字的五行能量成倍放大，對應解讀如下。' });
+  }
+  if (fire) items.push({ good: false, t: '🔥 0 旁有 2／7（火）· 火勢蔓延', d: '0 是放大鏡，把旁邊火數的能量成倍放大：易沒耐心、心火旺、焦慮發炎。解法「水克火」：客廳書桌多放水培植物，多穿黑色與深藍色衣服，用水的磁場壓火。' });
+  if (water) items.push({ good: false, t: '💧 0 旁有 1／6（水）· 水淹金山', d: '水被 0 放大：脾氣較悶、腎氣易不足、濕氣重、冬天手腳冰冷。解法「補火」：多曬早上 9–11 點的太陽（曬背部督脈），做微微出汗的運動把寒濕逼出來。' });
+  if (metal) items.push({ good: false, t: '⚙️ 0 旁有 4／9（金）· 延伸解讀', d: '金主原則與肅殺，被 0 放大：抗壓、能扛事、講規則，適合架構與制度型工作，但壓力易積在肩頸腰背，心也容易變硬。解法：規律伸展與泡湯放鬆、行程刻意留白，練習把話說軟、把錢轉成房產土地等穩固資產。' });
+  if (wood) items.push({ good: true, t: '🌱 0 旁有 3／8（木）· 延伸解讀', d: '木主生發成長，被 0 放大：學習力強、機會多、易開枝散葉，是很好的擴張能量。提醒：攤子別鋪太大，把成長聚焦在一兩條主線，定期修剪不重要的枝節。' });
+  if (earth) items.push({ good: true, t: '⛰️ 0 旁有 5（土）· 延伸解讀', d: '土主穩重包容，被 0 放大：根基厚、受人信賴、守得住成果。提醒：易思慮過重、脾胃受累——飲食定時、飯後散步，煩惱寫下來就放下。' });
   return items.length ? items : null;
 }
 
