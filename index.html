@@ -591,5 +591,22 @@ $('copyLink').addEventListener('click', async () => {
   }
 });
 </script>
+<!-- pv-counter-3minstest -->
+<div id="pv-counter" style="text-align:center;padding:14px 16px 20px;font-size:0.8rem;color:#8a8a8a;font-family:system-ui,-apple-system,sans-serif;" hidden></div>
+<script>
+(function(){
+  var el=document.getElementById('pv-counter'); if(!el) return;
+  var host=(location.hostname.split('.')[0]||'site');
+  var slug=(location.pathname.replace(/\.html?$/i,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'index');
+  var key=(host+'_'+slug).replace(/[^A-Za-z0-9_-]/g,'').slice(0,64);
+  var SELF='https://counter.3minstest.com/'+key, FB='https://api.counterapi.dev/v1/3minstest/'+key;
+  var ck='pv_'+key, counted=false; try{counted=sessionStorage.getItem(ck)==='1';}catch(e){}
+  var suf=counted?'':'/up';
+  function ok(d){ if(d&&typeof d.count==='number'){ el.textContent='\u{1F441}️ 本頁瀏覽 '+Number(d.count).toLocaleString()+' 次'; el.hidden=false; try{if(!counted)sessionStorage.setItem(ck,'1');}catch(e){} return true;} throw 0; }
+  fetch(SELF+suf).then(function(r){return r.json();}).then(ok).catch(function(){
+    fetch(FB+suf).then(function(r){return r.json();}).then(ok).catch(function(){});
+  });
+})();
+</script>
 </body>
 </html>
